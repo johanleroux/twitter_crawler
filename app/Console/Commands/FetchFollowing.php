@@ -54,6 +54,7 @@ class FetchFollowing extends Command
                 'name'        => $tmp->name,
                 'description' => $tmp->description,
                 'location'    => $tmp->location,
+                'profile'     => $tmp->profile_image_url_https
             ]);
 
             // Get Followings
@@ -88,6 +89,7 @@ class FetchFollowing extends Command
                     'screen_name' => $tmp->screen_name,
                     'description' => $tmp->description,
                     'location'    => $tmp->location,
+                    'profile'     => $tmp->profile_image_url_https
                 ]);
 
                 $userFollowing->follow($user->id);
