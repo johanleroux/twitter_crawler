@@ -16,6 +16,9 @@
     <nav class="navbar sticky-top navbar-dark bg-dark">
         <div class="col-4">
             <form action="{{ url('/') }}" method="POST" class="form-inline">
+                @if(isset($leader))
+                    <a href="{{ url('/') }}" class="btn text-info btn-outline-info mb-2 mr-2">&#64;{{ $leader->screen_name}}'s following</a>
+                @endif
                 @csrf
                 <label class="sr-only" for="username">Username</label>
                 <div class="input-group mb-2 mr-sm-2">
@@ -27,10 +30,8 @@
                 <button type="submit" class="btn btn-outline-primary mb-2">Crawl</button>
             </form>
         </div>
-        <div class="col-4 text-center">
-            @if(isset($leader))
-                <a href="{{ url('/') }}" class="btn text-info btn-outline-info my-2 my-sm-0">&#64;{{ $leader->screen_name}}'s following</a>
-            @endif
+        <div class="col-4 text-center text-white">
+            {{ $info->resources->friends->{"/friends/list"}->remaining }} requests remaining. Resets in {{ (\Carbon\Carbon::createFromTimestamp($info->resources->friends->{"/friends/list"}->reset))->diffForHumans() }}
         </div>
         <div class="col-4 text-right">
             <button onclick="document.getElementById('followers').submit();" class="btn btn-outline-success my-2 my-sm-0">Update Crawler</button>
@@ -42,7 +43,7 @@
                 <form id="followers" action="{{ url('/') }}" method="POST">
                     @csrf
                     @method('patch')
-                    <table class="table table-dark table-hover mb-0">
+                    <table class="table table-responsive table-dark table-hover mb-0">
                         <thead>
                             <th class="text-center">#</th>
                             <th>Name</th>

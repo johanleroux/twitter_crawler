@@ -1,8 +1,13 @@
 <?php
 
 use App\User;
+use Illuminate\Support\Facades\Cache;
 
 Route::get('/', function () {
+    $info = Cache::remember('users', 0.25, function () {
+        return Twitter::getAppRateLimit();
+    });
+
     $leader = request()->user;
     if($leader)
         $leader = User::where('id', $leader)->firstOrFail();
@@ -20,7 +25,7 @@ Route::get('/', function () {
                     })
                     ->get();
 
-    return view('welcome', compact('leader', 'users'));
+    return view('welcome', compact('leader', 'users', 'info'));
 });
 
 Route::post('/', function() {
