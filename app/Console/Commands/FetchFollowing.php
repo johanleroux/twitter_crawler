@@ -66,7 +66,8 @@ class FetchFollowing extends Command
                         'screen_name'           => $tmp->screen_name,
                         'skip_status'           => false,
                         'include_user_entities' => false,
-                        'cursor'                => $nextCursor
+                        'cursor'                => $nextCursor,
+                        'count'                 => 200
                     ]);
                 
                 $nextCursor = $jsonData->next_cursor;
