@@ -29,7 +29,7 @@
         </div>
         <div class="col-4 text-center">
             @if(isset($leader))
-                <a href="{{ url('/') }}" class="btn text-info btn-outline-info my-2 my-sm-0">&#64;{{ $leader->screen_name}}'s followers</a>
+                <a href="{{ url('/') }}" class="btn text-info btn-outline-info my-2 my-sm-0">&#64;{{ $leader->screen_name}}'s following</a>
             @endif
         </div>
         <div class="col-4 text-right">
