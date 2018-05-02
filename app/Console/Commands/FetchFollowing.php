@@ -63,6 +63,7 @@ class FetchFollowing extends Command
             $nextCursor = -1;
 
             do {
+                info('Looping');
                 $jsonData = Twitter::getFriends([
                         'screen_name'           => $tmp->screen_name,
                         'skip_status'           => false,
