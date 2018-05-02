@@ -28,7 +28,7 @@ class User extends Authenticatable
 
     public function isFollowing($value)
     {
-        return $this->followers()->where('leader_id', $value)->first() ? true : false;
+        return $this->followings()->where('leader_id', $value)->first() ? true : false;
     }
 
     public function follow(int $profileId)
