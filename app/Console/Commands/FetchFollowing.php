@@ -44,6 +44,7 @@ class FetchFollowing extends Command
                     ->get();
 
         $users->each(function($user) {
+            info('Crawling ' . $user->screen_name);
 
             $tmp = Twitter::getUsersLookup(['screen_name' => $user->screen_name])[0];
 
@@ -79,6 +80,7 @@ class FetchFollowing extends Command
 
             } while ($nextCursor != 0);
             
+            $i = 0;            
             // Add Followings
             foreach($userFollowings as $tmp)
             {
@@ -94,9 +96,12 @@ class FetchFollowing extends Command
 
                 if(!$userFollowing->isFollowing($user->id))
                     $userFollowing->follow($user->id);
+                $i++;
             }
+            info('Added ' . $i . ' followings');
 
             $user->update(['crawled_at' => now()]);
+            info('Crawled ' . $user->screen_name);
         });
     }
 }
