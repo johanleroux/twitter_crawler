@@ -26,6 +26,11 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'leader_id');
     }
 
+    public function isFollowing($value)
+    {
+        return $this->followings()->where('leader_id', $value)->first() ? true : false;
+    }
+
     public function follow(int $profileId)
     {
         $user = User::find($profileId);
