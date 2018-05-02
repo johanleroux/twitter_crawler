@@ -92,7 +92,8 @@ class FetchFollowing extends Command
                     'profile'     => $tmp->profile_image_url_https
                 ]);
 
-                $userFollowing->follow($user->id);
+                if(!$userFollowing->isFollowing($user->id))
+                    $userFollowing->follow($user->id);
             }
 
             $user->update(['crawled_at' => now()]);
