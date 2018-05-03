@@ -79,6 +79,7 @@
                             @endforelse
                         </tbody>
                     </table>
+                    {{ $users->appends(['user' => $leader ? $leader->id : ''])->links() }}
                 </form>
             </div>
         </div>

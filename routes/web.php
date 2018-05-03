@@ -23,7 +23,7 @@ Route::get('/', function () {
 
                         return $query->whereIn('id', $followers);
                     })
-                    ->get();
+                    ->paginate(250);
 
     return view('welcome', compact('leader', 'users', 'info'));
 });
