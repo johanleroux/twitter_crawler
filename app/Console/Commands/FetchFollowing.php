@@ -39,6 +39,9 @@ class FetchFollowing extends Command
      */
     public function handle()
     {
+        $rates = Twitter::getAppRateLimit();
+        if($rates->resources->friends->{"/friends/list"}->remaining <= 0) return;
+
         $users = User::where('should_crawl', true)
                     ->where('crawled_at', null)
                     ->get();
