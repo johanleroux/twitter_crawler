@@ -50,9 +50,9 @@ class FetchFollowing extends Command
 
             $user = User::updateOrCreate([
                 'screen_name' => $tmp->screen_name,
-                'twitter_id'  => $tmp->id,
             ], [
                 'name'        => $tmp->name,
+                'twitter_id'  => $tmp->id,
                 'description' => $tmp->description,
                 'location'    => $tmp->location,
                 'profile'     => $tmp->profile_image_url_https
