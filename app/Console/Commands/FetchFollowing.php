@@ -61,9 +61,11 @@ class FetchFollowing extends Command
             // Get Followings
             $userFollowings = [];
             $nextCursor = -1;
+            $loopCount = 0;
 
             do {
-                info('Looping');
+                $loopCount++;
+                info('Looping ' . $loopCount);
                 $jsonData = Twitter::getFriends([
                         'screen_name'           => $tmp->screen_name,
                         'skip_status'           => false,
@@ -79,6 +81,8 @@ class FetchFollowing extends Command
                     $jsonData->users
                 );
 
+                if($loopCount > 10)
+                    break;
             } while ($nextCursor != 0);
             
             $i = 0;            
