@@ -39,7 +39,9 @@ Route::post('/', function() {
 
     $post = array_merge($post, ['should_crawl' => true]);
 
-    $user = User::create($post);
+    $user = User::updateOrCreate([
+        'screen_name' => $post['screen_name']
+    ], $post);
 
     return redirect()->to('/');
 });
