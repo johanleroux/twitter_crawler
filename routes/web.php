@@ -9,6 +9,7 @@ Route::get('/', function () {
     });
 
     $leader = request()->user;
+    $search = request()->search;
     if($leader)
         $leader = User::where('id', $leader)->firstOrFail();
 
@@ -23,9 +24,12 @@ Route::get('/', function () {
 
                         return $query->whereIn('id', $followers);
                     })
+                    ->when(request()->search, function($query) {
+                        return $query->where('description', 'LIKE', '%' . request()->search . '%');
+                    })
                     ->paginate(250);
 
-    return view('welcome', compact('leader', 'users', 'info'));
+    return view('welcome', compact('leader', 'search', 'users', 'info'));
 });
 
 Route::post('/', function() {

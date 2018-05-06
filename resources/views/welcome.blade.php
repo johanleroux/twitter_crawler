@@ -33,8 +33,12 @@
         <div class="col-4 text-center text-white">
             {{ $info->resources->friends->{"/friends/list"}->remaining }} requests remaining. Resets in {{ (\Carbon\Carbon::createFromTimestamp($info->resources->friends->{"/friends/list"}->reset))->diffForHumans() }}
         </div>
-        <div class="col-4 text-right">
-            <button onclick="document.getElementById('followers').submit();" class="btn btn-outline-success my-2 my-sm-0">Update Crawler</button>
+        <div class="form-inline col-4 justify-content-end">
+            <label class="sr-only" for="description">Description</label>
+            <input type="text" class="form-control mb-2 mr-2" id="description" name="screen_name" placeholder="Description">
+
+            <button onclick="description(this)" class="btn btn-outline-success mb-2 mr-2">Search</button>
+            <button onclick="document.getElementById('followers').submit();" class="btn btn-outline-danger mb-2">Update Crawler</button>
         </div>
     </nav>
     <div class="container-fluid">
@@ -51,7 +55,10 @@
                             <th>Description</th>
                             <th>Location</th>
                             <th style="min-width: 170px;">Updated At</th>
-                            <th class="text-center">Crawl?</th>
+                            <th class="text-center">
+                                Crawl?
+                                <input type="checkbox" onchange="toggleCheckbox(this)">
+                            </th>
                             <th style="min-width: 170px;">Crawled At</th>
                         </thead>
                         <tbody>
@@ -68,7 +75,7 @@
                                 <td>{{ $user->location }}</td>
                                 <td>{{ $user->updated_at }}</td>
                                 <td class="text-center">
-                                    <input class="position-static" name="crawl[{{ $user->id }}]" type="checkbox" value="1" @if( $user->should_crawl ) checked @endif>
+                                    <input class="position-static should_crawl" name="crawl[{{ $user->id }}]" type="checkbox" value="1" @if( $user->should_crawl ) checked @endif>
                                 </td>
                                 <td>{{ $user->crawled_at }}</td>
                             </tr>
@@ -79,11 +86,45 @@
                             @endforelse
                         </tbody>
                     </table>
-                    {{ $users->appends(['user' => $leader ? $leader->id : ''])->links() }}
+                    {{ $users->appends(['user' => $leader ? $leader->id : '', 'search' => $search ?: ''])->links() }}
                 </form>
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleCheckbox(element) {
+            let checkboxes = document.getElementsByClassName("should_crawl");
+            for (let i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = element.checked;
+            }
+        }
+
+        function description(element) {
+            let search = document.getElementById("description").value;
+
+            const url = new URL(window.location);
+            let user = url.searchParams.get("user");
+            let page = url.searchParams.get("page");
+
+            let query = {
+                user: user,
+                page: page,
+                search: search
+            }
+
+            let querystring = encodeData(query);
+
+            window.location = '?' + querystring;
+        }
+
+        function encodeData(data) {
+            return Object.keys(data).map(function(key) {
+                if(!data[key]) data[key] = '';
+                return [key, data[key]].map(encodeURIComponent).join("=");
+            }).join("&");
+        }
+    </script>
 </body>
 
 </html>
